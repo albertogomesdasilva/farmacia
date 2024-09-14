@@ -27,11 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      if (!is_dir($uploadDir)) {
          mkdir($uploadDir, 0777, true);
      }
+    $descricaoSemEspacos = str_replace(' ', '', $descricao);
+    $uploadFile = $uploadDir . basename($descricaoSemEspacos . $arquivo['name']);
+    //  $uploadFile = $uploadDir . basename($descricao.$arquivo['name']);
 
-     $uploadFile = $uploadDir . basename($arquivo['name']); // eXPLIQUE ESTA LINHA
 
-
-     if (move_uploaded_file($arquivo['tmp_name'.$descricao], $uploadFile)) {
+     if (move_uploaded_file($arquivo['tmp_name'], $uploadFile)) {
          echo "Arquivo enviado com sucesso.";
      } else {
          echo "Erro ao enviar o arquivo.";

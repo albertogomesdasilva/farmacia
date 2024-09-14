@@ -2,6 +2,22 @@
 include 'header.php';
 session_start();
 
+
+// Obtém o ID do produto da query string
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($product_id > 0) {
+    // Consulta o banco de dados para obter os detalhes do produto
+    $sql = "SELECT * FROM farmacia WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    
+    if ($stmt->rowCount() > 0) {
+        // Exibe os detalhes do produto
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
 if (!isset($_SESSION['user_id'])) {
       header("Location: ./login.php");
 }
@@ -24,6 +40,9 @@ if (!isset($_SESSION['user_id'])) {
       <div class="row">
                   <div class="col">
                   <a class="btn btn-primary" href="lista.php">Voltar</a>
+                    <a href='editar.php?id=<?php echo $row['id'] ?> '>Editar</a>
+                    <a href='excluir.php?id=<?php echo $row['id'] ?>'>Excluir</a>
+                    
                   </div>
             </div>
 
@@ -32,25 +51,16 @@ if (!isset($_SESSION['user_id'])) {
                   
                   <?php
 
-// Obtém o ID do produto da query string
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-if ($product_id > 0) {
-    // Consulta o banco de dados para obter os detalhes do produto
-    $sql = "SELECT * FROM farmacia WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        // Exibe os detalhes do produto
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo "<h1>" . htmlspecialchars($row['id']) . "</h1>";
         $descricao = htmlspecialchars($row['descricao']);
         echo "<p>Descrição: " . htmlspecialchars($descricao) . "</p>";
         echo "<p>Grupo: " . htmlspecialchars($row['grupo']) . "</p>";
         echo "<p>Preço: R$ " . number_format($row['preco'], 2, ',', '.') . "</p>";
-        echo "<p>Validade: " . htmlspecialchars($row['validade']) . "</p>";
+
+        $validade = DateTime::createFromFormat('Y-m-d', $row['validade']);
+        echo "<p>" . htmlspecialchars($validade->format('d-m-Y')) . "</p>";
+        // echo "<p>Validade: " . htmlspecialchars($row['validade']) . "</p>";
         echo "<p>Quantidade em estoque: " . htmlspecialchars($row['estoque']) . "</p>";
 
         if (!empty($row['imagem'])) {
