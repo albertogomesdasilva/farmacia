@@ -15,10 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  $grupo = htmlspecialchars($_POST['grupo']);
  $validade = htmlspecialchars($_POST['validade']);
  $arquivo = $_FILES['arquivo'];
+ $date = date('Y-m-d H-i-s');
 
 
  // Processar o upload do arquivo
  if ($arquivo['error'] == UPLOAD_ERR_OK) {
+    
      $uploadDir = 'uploads/';
      
      // Verificar se o diretório existe, se não, criar
@@ -26,9 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          mkdir($uploadDir, 0777, true);
      }
 
-     $uploadFile = $uploadDir . basename($arquivo['name']);
+     $uploadFile = $uploadDir . basename($arquivo['name']); // eXPLIQUE ESTA LINHA
 
-     if (move_uploaded_file($arquivo['tmp_name'], $uploadFile)) {
+
+     if (move_uploaded_file($arquivo['tmp_name'.$descricao], $uploadFile)) {
          echo "Arquivo enviado com sucesso.";
      } else {
          echo "Erro ao enviar o arquivo.";
@@ -38,14 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  }
 
  // Preparar e executar a consulta SQL para inserir o novo item
- $sql = "INSERT INTO farmacia (descricao, preco, estoque, grupo, validade, arquivo) VALUES (:descricao, :preco, :estoque, :grupo, :validade, :arquivo)";
+ $sql = "INSERT INTO farmacia (descricao, preco, estoque, grupo, validade, imagem) VALUES (:descricao, :preco, :estoque, :grupo, :validade, :imagem)";
  $stmt = $conn->prepare($sql);
  $stmt->bindParam(':descricao', $descricao);
  $stmt->bindParam(':preco', $preco);
  $stmt->bindParam(':estoque', $estoque);
  $stmt->bindParam(':grupo', $grupo);
  $stmt->bindParam(':validade', $validade);
- $stmt->bindParam(':arquivo', $uploadFile);
+ $stmt->bindParam(':imagem', $uploadFile);
 
  if ($stmt->execute()) {
      echo "Item cadastrado com sucesso.";
@@ -75,7 +78,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          <label for="grupo">Grupo:</label>
          <select id="grupo" name="grupo" required>
              <option value="GENÉRICO">GENÉRICO</option>
-             <option value="CIMED">CIMED</option>
+             <option value="CIMED">ÉTICO</option>
+             <option value="CIMED">HOSPITALAR</option>
+             <option value="CIMED">NATURAL</option>
+             <option value="CIMED">HB</option>
+             <option value="CIMED">VITAMINA</option>
+             <option value="CIMED">GERAL</option>
              <option value="OUTROS">OUTROS</option>
          </select><br><br>
          <label for="preco">Preço:</label>
@@ -94,6 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
          <input type="date" id="validade" name="validade" required><br><br>
          <label for="estoque">Estoque:</label>
          <input type="number" id="estoque" name="estoque" required><br><br>
+
          <label for="arquivo">Arquivo:</label>
          <input type="file" id="arquivo" name="arquivo" accept=".pdf, .png, .jpg, .jpeg"><br><br>
 

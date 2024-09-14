@@ -46,14 +46,16 @@ if ($product_id > 0) {
         // Exibe os detalhes do produto
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo "<h1>" . htmlspecialchars($row['id']) . "</h1>";
-        echo "<p>Descrição: " . htmlspecialchars($row['descricao']) . "</p>";
+        $descricao = htmlspecialchars($row['descricao']);
+        echo "<p>Descrição: " . htmlspecialchars($descricao) . "</p>";
         echo "<p>Grupo: " . htmlspecialchars($row['grupo']) . "</p>";
         echo "<p>Preço: R$ " . number_format($row['preco'], 2, ',', '.') . "</p>";
         echo "<p>Validade: " . htmlspecialchars($row['validade']) . "</p>";
         echo "<p>Quantidade em estoque: " . htmlspecialchars($row['estoque']) . "</p>";
 
-        if (!empty($row['arquivo'])) {
-            echo "<p><img src='" . htmlspecialchars($row['arquivo']) . "' alt='Imagem do produto'></p>";
+        if (!empty($row['imagem'])) {
+        echo "<p><img src='" . htmlspecialchars($row['imagem']) . "' alt='$descricao' style='width: 200px; height: 200px;'></p>";
+            // echo "<p><img src='" . htmlspecialchars($row['imagem']) . "' alt='$descricao'></p>";
         } else {
             echo "<p>Imagem não disponível.</p>";
         }
@@ -61,6 +63,8 @@ if ($product_id > 0) {
 
     } else {
         echo "<p>Produto não encontrado.</p>";
+        // Redireciona de volta para a lista de produtos após 2 segundos
+        header("refresh:2;url=lista.php");
     }
 } else {
     echo "<p>ID de produto inválido.</p>";

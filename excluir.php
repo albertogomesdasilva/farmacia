@@ -10,9 +10,18 @@ if ($id > 0) {
     // Verificar se a exclusão foi confirmada
     if (isset($_GET['confirmar']) && $_GET['confirmar'] == 'sim') {
         // Preparar e executar a consulta SQL para excluir o item
-        $sql = "DELETE FROM farmacia WHERE id = :id";
+        // Apagar a imagem da pasta uploads
+        $sql = "SELECT imagem FROM farmacia WHERE id = :id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $imagem = $row['imagem'];
+        if (!empty($imagem)) {
+            unlink($imagem);
+        }
+
+
 
         if ($stmt->execute()) {
             // Exibe um alert de excluido com sucesso e redireciona para a lista.php
