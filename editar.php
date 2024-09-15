@@ -29,47 +29,49 @@ if ($id > 0) {
     // Verificar se o item foi encontrado
     if ($row) {
         ?>
-        <div class="container">
+        <div class="container mt-5">
             <div class="row">
                 <div class="col">
                     <h1>Editar</h1>
-                    <a class="btn btn-primary" href="lista.php">Home</a>
+                    <a class="btn btn-primary mb-3" href="lista.php">Home</a>
                 </div>
             </div>
 
             <form class="form-group" method="post" action="editar.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $id ?>">
-                <label for="descricao">Descrição:</label>
-                <input class="form-control" type="text" id="descricao" name="descricao" value="<?php echo htmlspecialchars($row['descricao']); ?>" ><br><br>
-                <label for="grupo">Grupo:</label>
-                <select id="grupo" name="grupo" required>
-                    <option value="CIMED" <?php if ($row['grupo'] == 'CIMED') echo 'selected'; ?>>CIMED</option>
-                    <option value="OUTROS" <?php if ($row['grupo'] == 'OUTROS') echo 'selected'; ?>>OUTROS</option>
-                </select><br><br>
-
-                <label for="preco">Preço:</label>
-                <input type="text" id="preco" name="preco" value="<?php echo htmlspecialchars($row['preco']); ?>" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56"><br><br>
-                <script>
-                document.getElementById('preco').addEventListener('input', function (e) {
-                    var value = e.target.value;
-                    value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
-                    value = (value / 100).toFixed(2); // Formata como decimal
-                    e.target.value = value;
-                });
-                </script>
-
-                <label for="validade">Validade:</label>
-                <input type="date" id="validade" name="validade" value="<?php echo htmlspecialchars($row['validade']); ?>" ><br><br>
-                <label for="estoque">Estoque:</label>
-                <input type="number" id="estoque" name="estoque" value="<?php echo htmlspecialchars($row['estoque']); ?>" ><br><br>
-                <label for="imagem">Alterar Imagem:</label>
-                <input type="file" id="imagem" name="imagem" accept=".pdf, .png, .jpg, .jpeg"><br><br>
-                <input type="submit" value="Salvar">
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição:</label>
+                    <input class="form-control" type="text" id="descricao" name="descricao" value="<?php echo htmlspecialchars($row['descricao']); ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="grupo" class="form-label">Grupo:</label>
+                    <select class="form-select" id="grupo" name="grupo" required>
+                        <option value="CIMED" <?php if ($row['grupo'] == 'CIMED') echo 'selected'; ?>>CIMED</option>
+                        <option value="OUTROS" <?php if ($row['grupo'] == 'OUTROS') echo 'selected'; ?>>OUTROS</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="preco" class="form-label">Preço:</label>
+                    <input class="form-control" type="text" id="preco" name="preco" value="<?php echo htmlspecialchars($row['preco']); ?>" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56">
+                </div>
+                <div class="mb-3">
+                    <label for="validade" class="form-label">Validade:</label>
+                    <input class="form-control" type="date" id="validade" name="validade" value="<?php echo htmlspecialchars($row['validade']); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="estoque" class="form-label">Estoque:</label>
+                    <input class="form-control" type="number" id="estoque" name="estoque" value="<?php echo htmlspecialchars($row['estoque']); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="imagem" class="form-label">Alterar Imagem:</label>
+                    <input class="form-control" type="file" id="imagem" name="imagem" accept=".pdf, .png, .jpg, .jpeg">
+                </div>
+                <button type="submit" class="btn btn-success">Salvar</button>
                 
                 <?php 
                 // Exibir a imagem do item
                 if (!empty($row['imagem'])) {
-                    echo "<p><img src='" . htmlspecialchars($row['imagem']) . "' alt='" . htmlspecialchars($row['descricao']) . "' style='width: 200px; height: 200px;'></p>";
+                    echo "<div class='mt-3'><img src='" . htmlspecialchars($row['imagem']) . "' alt='" . htmlspecialchars($row['descricao']) . "' class='img-thumbnail' style='width: 200px; height: 200px;'></div>";
                 } else {
                     echo "<p>Imagem não disponível.</p>";
                 }
@@ -78,10 +80,10 @@ if ($id > 0) {
         </div>
         <?php
     } else {
-        echo "Item não encontrado.";
+        echo "<div class='alert alert-danger'>Item não encontrado.</div>";
     }
 } else {
-    echo "ID inválido.";
+    echo "<div class='alert alert-danger'>ID inválido.</div>";
 }
 
 // Verificar se o formulário foi enviado
@@ -108,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $uploadFile = $uploadDir . basename($descricaoSemEspacos . $imagem['name']);
 
         if (move_uploaded_file($imagem['tmp_name'], $uploadFile)) {
-            echo "Arquivo enviado com sucesso.";
+            echo "<div class='alert alert-success'>Arquivo enviado com sucesso.</div>";
 
             // Apagar a imagem antiga, se existir
             if (!empty($row['imagem']) && file_exists($row['imagem'])) {
@@ -127,14 +129,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
             if ($stmt->execute()) {
-                echo "Item atualizado com sucesso.";
+                echo "<div class='alert alert-success'>Item atualizado com sucesso.</div>";
                 header("Location: lista.php");
                 exit();
             } else {
-                echo "Erro ao atualizar o item: " . $stmt->errorInfo()[2];
+                echo "<div class='alert alert-danger'>Erro ao atualizar o item: " . $stmt->errorInfo()[2] . "</div>";
             }
         } else {
-            echo "Erro ao enviar o arquivo.";
+            echo "<div class='alert alert-danger'>Erro ao enviar o arquivo.</div>";
         }
     } else {
         // Atualizar o item sem alterar a imagem
@@ -148,11 +150,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            echo "Item atualizado com sucesso.";
+            echo "<div class='alert alert-success'>Item atualizado com sucesso.</div>";
             header("Location: lista.php");
             exit();
         } else {
-            echo "Erro ao atualizar o item: " . $stmt->errorInfo()[2];
+            echo "<div class='alert alert-danger'>Erro ao atualizar o item: " . $stmt->errorInfo()[2] . "</div>";
         }
     }
 }

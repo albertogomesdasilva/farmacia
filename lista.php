@@ -7,10 +7,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 include 'logado.php';
 ?>
-           <div class="container">
+<div class="container">
       <div class="row">
             <div class="col">
-            <h1  style="color: #138496">Lista Geral</h1>
+                  <h1 style="color: #138496">Lista Geral</h1>
             </div>
       </div>
       <div class="row">
@@ -23,9 +23,10 @@ include 'logado.php';
                   $offset = ($page - 1) * $limit;
                   
                   // Formulário de busca
-                  echo '<form method="GET" action="">
-                  <input type="text" name="search" value="' . htmlspecialchars($search) . '">
-                  <input type="submit" value="Buscar"> -        <a href="lista.php" > X </a>
+                  echo '<form class="form-inline" method="GET" action="">
+                  <input type="text" class="form-control mb-2 mr-sm-2" name="search" value="' . htmlspecialchars($search) . '">
+                  <input type="submit" class="btn btn-primary mb-2" value="Buscar">
+                  <a href="lista.php" class="btn btn-secondary mb-2 ml-2">X</a>
                   </form>';
                   echo '</br>';
                   echo '</br>';
@@ -37,51 +38,56 @@ include 'logado.php';
                   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
                   $stmt->execute();
                   ?>
-                        <a class="btn btn-primary" href="cadastrar.php">Cadastrar</a>
-                        </div>
-                        </div>
-                        <br/>
-                        <?php
-                  // Exibir os resultados em uma tabela
-                  echo "<table border='1'>";
-                  echo "<tr><th>ID</th><th>Descrição</th><th>Grupo</th><th>Preço Venda</th><th>Validade</th><th>Quantidade</th><th>Editar</th><th>Excluir</th><th>Detalhes</th></tr>";
-
-                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['id']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['descricao']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['grupo']) . "</td>";
-                        echo "<td  style='text-align: center;'>" . "R$ " . htmlspecialchars(number_format($row['preco'], 2, ',', '.')). "</td>";
-
-                        $validade = DateTime::createFromFormat('Y-m-d', $row['validade']);
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($validade->format('d-m-Y')) . "</td>";
-                        echo "<td style='text-align: center;'>" . htmlspecialchars($row['estoque']) . "</td>";
-
-                        echo "<td><a href='editar.php?id=" . htmlspecialchars($row['id']) . "'>Editar</a></td>";
-                        echo "<td><a href='excluir.php?id=" . htmlspecialchars($row['id']) . "'>Excluir</a></td>";
-                        echo "<td><a href='detalhes.php?id=" . htmlspecialchars($row['id']) . "'>Detalhes</a></td>";
-                        echo "</tr>";
-                  }
-
-                  echo "</table>";
-                  echo "</br>";
-                 
-                
-                  // Links de paginação
-                  $total_query = "SELECT COUNT(*) FROM farmacia WHERE descricao LIKE :search";
-                  $total_stmt = $conn->prepare($total_query);
-                  $total_stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
-                  $total_stmt->execute();
-                  $total_rows = $total_stmt->fetchColumn();
-                  $total_pages = ceil($total_rows / $limit);
-
-                  for ($i = 1; $i <= $total_pages; $i++) {
-                        echo '<a href="?search=' . urlencode($search) . '&page=' . $i . '">' . $i . '</a> ';
-                  }
-            ?>
+                  <a class="btn btn-primary" href="cadastrar.php">Cadastrar</a>
             </div>
+      </div>
+      <br/>
+      <?php
+      // Exibir os resultados em uma tabela
+      echo "<table class='table table-bordered'>";
+      echo "<thead class='thead-dark'>";
+      echo "<tr><th>ID</th><th>Descrição</th><th>Grupo</th><th>Preço Venda</th><th>Validade</th><th>Quantidade</th><th>Editar</th><th>Excluir</th><th>Detalhes</th></tr>";
+      echo "</thead>";
+      echo "<tbody>";
+
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['id']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['descricao']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['grupo']) . "</td>";
+            echo "<td style='text-align: center;'>" . "R$ " . htmlspecialchars(number_format($row['preco'], 2, ',', '.')). "</td>";
+
+            $validade = DateTime::createFromFormat('Y-m-d', $row['validade']);
+            echo "<td style='text-align: center;'>" . htmlspecialchars($validade->format('d-m-Y')) . "</td>";
+            echo "<td style='text-align: center;'>" . htmlspecialchars($row['estoque']) . "</td>";
+
+            echo "<td><a class='btn btn-warning btn-sm' href='editar.php?id=" . htmlspecialchars($row['id']) . "'>Editar</a></td>";
+            echo "<td><a class='btn btn-danger btn-sm' href='excluir.php?id=" . htmlspecialchars($row['id']) . "'>Excluir</a></td>";
+            echo "<td><a class='btn btn-info btn-sm' href='detalhes.php?id=" . htmlspecialchars($row['id']) . "'>Detalhes</a></td>";
+            echo "</tr>";
+      }
+
+      echo "</tbody>";
+      echo "</table>";
+      echo "</br>";
+     
+      // Links de paginação
+      $total_query = "SELECT COUNT(*) FROM farmacia WHERE descricao LIKE :search";
+      $total_stmt = $conn->prepare($total_query);
+      $total_stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+      $total_stmt->execute();
+      $total_rows = $total_stmt->fetchColumn();
+      $total_pages = ceil($total_rows / $limit);
+
+      echo '<nav aria-label="Page navigation">';
+      echo '<ul class="pagination">';
+      for ($i = 1; $i <= $total_pages; $i++) {
+            echo '<li class="page-item"><a class="page-link" href="?search=' . urlencode($search) . '&page=' . $i . '">' . $i . '</a></li>';
+      }
+      echo '</ul>';
+      echo '</nav>';
+      ?>
 </div>
 <?php
-
 include 'footer.php';
 ?>
