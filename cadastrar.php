@@ -1,8 +1,11 @@
 <?php
 include 'header.php';
+include 'logado.php';
 
 // Verificar se o usuário está logado
-session_start();
+if (!isset($_SESSION)){
+      session_start();
+}
 
 // Verificar se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

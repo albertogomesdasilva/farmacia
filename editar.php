@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+include 'logado.php';
 
 // Conectar ao banco de dados usando PDO
 $dsn = 'mysql:host=localhost;dbname=farmacia';
@@ -32,7 +33,7 @@ if ($id > 0) {
             <div class="row">
                 <div class="col">
                     <h1>Editar</h1>
-                    <a class="btn btn-primary" href="lista.php">Voltar</a>
+                    <a class="btn btn-primary" href="lista.php">Home</a>
                 </div>
             </div>
 
