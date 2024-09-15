@@ -5,28 +5,17 @@ session_start();
 if (!isset($_SESSION['user_id'])) {
       header("Location: ./login.php");
 }
+include 'logado.php';
 ?>
            <div class="container">
       <div class="row">
             <div class="col">
-            <h1>Lista Geral</h1>
-            </br>
-            </br>
-            </div>
-            <div class="col">
-            <?php  echo $_SESSION['user_name'] ;     ?>
-            </div>
-            <div class="col">
-            <a href="logout.php">Sair</a>
+            <h1  style="color: #138496">Lista Geral</h1>
             </div>
       </div>
-
-
       <div class="row">
             <div class="col">
-                  
                   <?php
-
                   // Obter o termo de busca e a página atual dos parâmetros da URL
                   $search = isset($_GET['search']) ? $_GET['search'] : '';
                   $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -36,14 +25,10 @@ if (!isset($_SESSION['user_id'])) {
                   // Formulário de busca
                   echo '<form method="GET" action="">
                   <input type="text" name="search" value="' . htmlspecialchars($search) . '">
-                  <input type="submit" value="Buscar"> -
-                  <a href="lista.php"> X </a>
+                  <input type="submit" value="Buscar"> -        <a href="lista.php" > X </a>
                   </form>';
-                  
-                  
                   echo '</br>';
                   echo '</br>';
-                  
                   // Consulta SQL com busca e paginação
                   $query = "SELECT * FROM farmacia WHERE descricao LIKE :search LIMIT :limit OFFSET :offset";
                   $stmt = $conn->prepare($query);
@@ -94,8 +79,6 @@ if (!isset($_SESSION['user_id'])) {
                         echo '<a href="?search=' . urlencode($search) . '&page=' . $i . '">' . $i . '</a> ';
                   }
             ?>
-           
-                  
             </div>
 </div>
 <?php

@@ -21,28 +21,29 @@ if ($product_id > 0) {
 if (!isset($_SESSION['user_id'])) {
       header("Location: ./login.php");
 }
+include 'logado.php';
 ?>
            <div class="container">
       <div class="row">
             <div class="col">
-            <h1>Detalhes </h1>
+            <h1  style="color: #138496">Detalhes </h1>
             </br>
             </br>
             </div>
-            <div class="col">
-            <?php  echo $_SESSION['user_name'] ;     ?>
-            </div>
-            <div class="col">
-            <a href="logout.php">Sair</a>
-            </div>
+           
       </div>
 
       <div class="row">
                   <div class="col">
-                  <a class="btn btn-primary" href="lista.php">Voltar</a>
-                    <a href='editar.php?id=<?php echo $row['id'] ?> '>Editar</a>
-                    <a href='excluir.php?id=<?php echo $row['id'] ?>'>Excluir</a>
-                    
+                <a class="btn btn-primary" href="lista.php">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+                <a class="btn btn-warning" href='editar.php?id=<?php echo $row['id'] ?>'>
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a class="btn btn-danger" href='excluir.php?id=<?php echo $row['id'] ?>'>
+                    <i class="fas fa-trash-alt"></i> Excluir
+                </a>
                   </div>
             </div>
 
