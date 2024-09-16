@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Conectar ao banco de dados usando PDO
     
  // Obter os dados do formulário
- $descricao = htmlspecialchars($_POST['descricao']);
+ $descricao = strtoupper(htmlspecialchars($_POST['descricao']));
  $preco = floatval($_POST['preco']);
  $estoque = intval($_POST['estoque']);
  $grupo = htmlspecialchars($_POST['grupo']);

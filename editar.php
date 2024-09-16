@@ -90,7 +90,7 @@ if ($id > 0) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obter os dados do formulário
     $id = intval($_POST['id']);
-    $descricao = $_POST['descricao'];
+    $descricao = strtoupper($_POST['descricao']);
     $grupo = $_POST['grupo'];
     $preco = floatval($_POST['preco']);
     $validade = $_POST['validade'];
