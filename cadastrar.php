@@ -4,13 +4,13 @@ include 'logado.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION)){
-      session_start();
+    session_start();
 }
 
 // Verificar se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      // Conectar ao banco de dados usando PDO
-      
+    // Conectar ao banco de dados usando PDO
+    
  // Obter os dados do formulário
  $descricao = htmlspecialchars($_POST['descricao']);
  $preco = floatval($_POST['preco']);
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      
      // Verificar se o diretório existe, se não, criar
      if (!is_dir($uploadDir)) {
-         mkdir($uploadDir, 0777, true);
+       mkdir($uploadDir, 0777, true);
      }
     $descricaoSemEspacos = str_replace(' ', '', $descricao);
     $uploadFile = $uploadDir . basename($descricaoSemEspacos . $arquivo['name']);
@@ -36,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
      if (move_uploaded_file($arquivo['tmp_name'], $uploadFile)) {
-         echo "Arquivo enviado com sucesso.";
+       echo "Arquivo enviado com sucesso.";
      } else {
-         echo "Erro ao enviar o arquivo.";
+       echo "Erro ao enviar o arquivo.";
      }
  } else {
      echo "Erro no upload do arquivo: " . $arquivo['error'];
@@ -72,15 +72,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
  <meta charset="UTF-8">
  <title>Cadastro de Item</title>
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
- <div class="container">
+ <div class="container mt-5">
      <h1>Cadastro de Item</h1>
-     <form class="form-group" method="post" action="cadastrar.php" enctype="multipart/form-data">
+     <form method="post" action="cadastrar.php" enctype="multipart/form-data">
+       <div class="form-group">
          <label for="descricao">Descrição:</label>
-         <input type="text" id="descricao" name="descricao" required><br><br>
+         <input type="text" class="form-control" id="descricao" name="descricao" required>
+       </div>
+       <div class="form-group">
          <label for="grupo">Grupo:</label>
-         <select id="grupo" name="grupo" required>
+         <select class="form-control" id="grupo" name="grupo" required>
              <option value="GENÉRICO">GENÉRICO</option>
              <option value="CIMED">ÉTICO</option>
              <option value="CIMED">HOSPITALAR</option>
@@ -89,29 +93,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
              <option value="CIMED">VITAMINA</option>
              <option value="CIMED">GERAL</option>
              <option value="OUTROS">OUTROS</option>
-         </select><br><br>
+         </select>
+       </div>
+       <div class="form-group">
          <label for="preco">Preço:</label>
-         <input type="text" id="preco" name="preco" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56"><br><br>
-
-         <script>
-         document.getElementById('preco').addEventListener('input', function (e) {
-             var value = e.target.value;
-             value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
-             value = (value / 100).toFixed(2); // Formata como decimal
-             e.target.value = value;
-         });
-         </script>
-
+         <input type="text" class="form-control" id="preco" name="preco" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56">
+       </div>
+       <div class="form-group">
          <label for="validade">Validade:</label>
-         <input type="date" id="validade" name="validade" required><br><br>
+         <input type="date" class="form-control" id="validade" name="validade" required>
+       </div>
+       <div class="form-group">
          <label for="estoque">Estoque:</label>
-         <input type="number" id="estoque" name="estoque" required><br><br>
-
+         <input type="number" class="form-control" id="estoque" name="estoque" required>
+       </div>
+       <div class="form-group">
          <label for="arquivo">Arquivo:</label>
-         <input type="file" id="arquivo" name="arquivo" accept=".pdf, .png, .jpg, .jpeg"><br><br>
-
-         <input class="btn btn-success" type="submit" value="Cadastrar">
+         <input type="file" class="form-control-file" id="arquivo" name="arquivo" accept=".pdf, .png, .jpg, .jpeg">
+       </div>
+       <button type="submit" class="btn btn-success">Cadastrar</button>
      </form>
  </div>
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script>
+ document.getElementById('preco').addEventListener('input', function (e) {
+     var value = e.target.value;
+     value = value.replace(/\D/g, ''); // Remove caracteres não numéricos
+     value = (value / 100).toFixed(2); // Formata como decimal
+     e.target.value = value;
+ });
+ </script>
 </body>
 </html>

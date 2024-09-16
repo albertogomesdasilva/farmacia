@@ -21,7 +21,7 @@ if ($product_id > 0) {
         }
         include 'logado.php';
 ?>
-        <div class="container mt-5">
+        <div class="container">
             <div class="row">
                 <div class="col">
                     <h1 class="text-info">Detalhes</h1>

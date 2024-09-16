@@ -15,6 +15,7 @@ include 'logado.php';
       </div>
       <div class="row">
             <div class="col">
+                  
                   <?php
                   // Obter o termo de busca e a página atual dos parâmetros da URL
                   $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -27,9 +28,8 @@ include 'logado.php';
                   <input type="text" class="form-control mb-2 mr-sm-2" name="search" value="' . htmlspecialchars($search) . '">
                   <input type="submit" class="btn btn-primary mb-2" value="Buscar">
                   <a href="lista.php" class="btn btn-secondary mb-2 ml-2">X</a>
+
                   </form>';
-                  echo '</br>';
-                  echo '</br>';
                   // Consulta SQL com busca e paginação
                   $query = "SELECT * FROM farmacia WHERE descricao LIKE :search LIMIT :limit OFFSET :offset";
                   $stmt = $conn->prepare($query);
@@ -38,7 +38,7 @@ include 'logado.php';
                   $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
                   $stmt->execute();
                   ?>
-                  <a class="btn btn-primary" href="cadastrar.php">Cadastrar</a>
+                 
             </div>
       </div>
       <br/>
@@ -69,7 +69,6 @@ include 'logado.php';
 
       echo "</tbody>";
       echo "</table>";
-      echo "</br>";
      
       // Links de paginação
       $total_query = "SELECT COUNT(*) FROM farmacia WHERE descricao LIKE :search";

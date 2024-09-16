@@ -29,11 +29,11 @@ if ($id > 0) {
     // Verificar se o item foi encontrado
     if ($row) {
         ?>
-        <div class="container mt-5">
+        <div class="container">
             <div class="row">
                 <div class="col">
                     <h1>Editar</h1>
-                    <a class="btn btn-primary mb-3" href="lista.php">Home</a>
+                  
                 </div>
             </div>
 
