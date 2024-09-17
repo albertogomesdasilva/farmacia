@@ -30,21 +30,25 @@ if ($product_id > 0) {
             </div>
 
             <div class="row mb-3">
-                <div class="col">
-                    <a class="btn btn-primary" href="lista.php">
+                <div class="col-12 col-md-4 mb-2">
+                    <a class="btn btn-primary w-100" href="lista.php">
                         <i class="fas fa-arrow-left"></i> Voltar
                     </a>
-                    <a class="btn btn-warning" href='editar.php?id=<?php echo $row['id'] ?>'>
+                </div>
+                <div class="col-12 col-md-4 mb-2">
+                    <a class="btn btn-warning w-100" href='editar.php?id=<?php echo $row['id'] ?>'>
                         <i class="fas fa-edit"></i> Editar
                     </a>
-                    <a class="btn btn-danger" href='excluir.php?id=<?php echo $row['id'] ?>'>
+                </div>
+                <div class="col-12 col-md-4 mb-2">
+                    <a class="btn btn-danger w-100" href='excluir.php?id=<?php echo $row['id'] ?>'>
                         <i class="fas fa-trash-alt"></i> Excluir
                     </a>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-12 col-md-6 mb-3">
                     <h2><?php echo htmlspecialchars($row['id']); ?></h2>
                     <p><strong>Descrição:</strong> <?php echo htmlspecialchars($row['descricao']); ?></p>
                     <p><strong>Grupo:</strong> <?php echo htmlspecialchars($row['grupo']); ?></p>
@@ -52,9 +56,23 @@ if ($product_id > 0) {
                     <p><strong>Validade:</strong> <?php echo htmlspecialchars(DateTime::createFromFormat('Y-m-d', $row['validade'])->format('d-m-Y')); ?></p>
                     <p><strong>Quantidade em estoque:</strong> <?php echo htmlspecialchars($row['estoque']); ?></p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-12 col-md-6 mb-3">
                     <?php if (!empty($row['imagem'])) { ?>
-                        <img src='<?php echo htmlspecialchars($row['imagem']); ?>' alt='<?php echo htmlspecialchars($row['descricao']); ?>' class='img-fluid rounded'>
+                        <img src='<?php echo htmlspecialchars($row['imagem']); ?>' alt='<?php echo htmlspecialchars($row['descricao']); ?>' class='img-fluid rounded mb-3'>
+                        <?php
+                        $directory = 'uploads/';
+                        $images = glob($directory . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+
+                        if ($images) {
+                            echo '<div class="gallery d-flex flex-wrap">';
+                            foreach ($images as $image) {
+                                echo '<img src="' . htmlspecialchars($image) . '" alt="Imagem da galeria" class="img-thumbnail m-1" style="width: 100px; height: 100px;">';
+                            }
+                            echo '</div>';
+                        } else {
+                            echo '<p>Nenhuma imagem encontrada na galeria.</p>';
+                        }
+                        ?>
                     <?php } else { ?>
                         <p>Imagem não disponível.</p>
                     <?php } ?>

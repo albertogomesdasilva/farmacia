@@ -33,38 +33,43 @@ if ($id > 0) {
             <div class="row">
                 <div class="col">
                     <h1>Editar</h1>
-                  
                 </div>
             </div>
 
             <form class="form-group" method="post" action="editar.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $id ?>">
-                <div class="mb-3">
-                    <label for="descricao" class="form-label">Descrição:</label>
-                    <input class="form-control" type="text" id="descricao" name="descricao" value="<?php echo htmlspecialchars($row['descricao']); ?>" required>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="descricao" class="form-label">Descrição:</label>
+                        <input class="form-control" type="text" id="descricao" name="descricao" value="<?php echo htmlspecialchars($row['descricao']); ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="grupo" class="form-label">Grupo:</label>
+                        <select class="form-select" id="grupo" name="grupo" required>
+                            <option value="CIMED" <?php if ($row['grupo'] == 'CIMED') echo 'selected'; ?>>CIMED</option>
+                            <option value="OUTROS" <?php if ($row['grupo'] == 'OUTROS') echo 'selected'; ?>>OUTROS</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="grupo" class="form-label">Grupo:</label>
-                    <select class="form-select" id="grupo" name="grupo" required>
-                        <option value="CIMED" <?php if ($row['grupo'] == 'CIMED') echo 'selected'; ?>>CIMED</option>
-                        <option value="OUTROS" <?php if ($row['grupo'] == 'OUTROS') echo 'selected'; ?>>OUTROS</option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="preco" class="form-label">Preço:</label>
+                        <input class="form-control" type="text" id="preco" name="preco" value="<?php echo htmlspecialchars($row['preco']); ?>" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="validade" class="form-label">Validade:</label>
+                        <input class="form-control" type="date" id="validade" name="validade" value="<?php echo htmlspecialchars($row['validade']); ?>">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="preco" class="form-label">Preço:</label>
-                    <input class="form-control" type="text" id="preco" name="preco" value="<?php echo htmlspecialchars($row['preco']); ?>" required pattern="^\d+(\.\d{1,2})?$" title="Por favor, insira um valor válido. Ex: 1234.56">
-                </div>
-                <div class="mb-3">
-                    <label for="validade" class="form-label">Validade:</label>
-                    <input class="form-control" type="date" id="validade" name="validade" value="<?php echo htmlspecialchars($row['validade']); ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="estoque" class="form-label">Estoque:</label>
-                    <input class="form-control" type="number" id="estoque" name="estoque" value="<?php echo htmlspecialchars($row['estoque']); ?>">
-                </div>
-                <div class="mb-3">
-                    <label for="imagem" class="form-label">Alterar Imagem:</label>
-                    <input class="form-control" type="file" id="imagem" name="imagem" accept=".pdf, .png, .jpg, .jpeg">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="estoque" class="form-label">Estoque:</label>
+                        <input class="form-control" type="number" id="estoque" name="estoque" value="<?php echo htmlspecialchars($row['estoque']); ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="imagem" class="form-label">Alterar Imagem:</label>
+                        <input class="form-control" type="file" id="imagem" name="imagem" accept=".pdf, .png, .jpg, .jpeg">
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-success">Salvar</button>
                 

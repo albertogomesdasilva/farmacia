@@ -10,7 +10,7 @@ include 'logado.php';
 <div class="container">
       <div class="row">
             <div class="col">
-                  <h1 style="color: #138496">Lista Geral</h1>
+                  <h1 class="text-center text-md-left" style="color: #138496">Lista Geral</h1>
             </div>
       </div>
       <div class="row">
@@ -24,11 +24,14 @@ include 'logado.php';
                   $offset = ($page - 1) * $limit;
                   
                   // Formulário de busca
-                  echo '<form class="form-inline" method="GET" action="">
-                  <input type="text" class="form-control mb-2 mr-sm-2" name="search" value="' . htmlspecialchars($search) . '">
-                  <input type="submit" class="btn btn-primary mb-2" value="Buscar">
-                  <a href="lista.php" class="btn btn-secondary mb-2 ml-2">X</a>
-
+                  echo '<form class="form-inline mb-3" method="GET" action="">
+                  <div class="input-group w-100">
+                        <input type="text" class="form-control" name="search" value="' . htmlspecialchars($search) . '">
+                        <div class="input-group-append">
+                              <input type="submit" class="btn btn-primary" value="Buscar">
+                              <a href="lista.php" class="btn btn-secondary ml-2">X</a>
+                        </div>
+                  </div>
                   </form>';
                   // Consulta SQL com busca e paginação
                   $query = "SELECT * FROM farmacia WHERE descricao LIKE :search LIMIT :limit OFFSET :offset";
@@ -44,6 +47,7 @@ include 'logado.php';
       <br/>
       <?php
       // Exibir os resultados em uma tabela
+      echo "<div class='table-responsive'>";
       echo "<table class='table table-bordered'>";
       echo "<thead class='thead-dark'>";
       echo "<tr><th>ID</th><th>Descrição</th><th>Grupo</th><th>Preço Venda</th><th>Validade</th><th>Quantidade</th><th>Editar</th><th>Excluir</th><th>Detalhes</th></tr>";
@@ -69,6 +73,7 @@ include 'logado.php';
 
       echo "</tbody>";
       echo "</table>";
+      echo "</div>";
      
       // Links de paginação
       $total_query = "SELECT COUNT(*) FROM farmacia WHERE descricao LIKE :search";
@@ -79,7 +84,7 @@ include 'logado.php';
       $total_pages = ceil($total_rows / $limit);
 
       echo '<nav aria-label="Page navigation">';
-      echo '<ul class="pagination">';
+      echo '<ul class="pagination justify-content-center">';
       for ($i = 1; $i <= $total_pages; $i++) {
             echo '<li class="page-item"><a class="page-link" href="?search=' . urlencode($search) . '&page=' . $i . '">' . $i . '</a></li>';
       }

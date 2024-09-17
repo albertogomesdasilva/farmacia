@@ -21,6 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  $date = date('Y-m-d H-i-s');
 
 
+
+
  // Processar o upload do arquivo
  if ($arquivo['error'] == UPLOAD_ERR_OK) {
     
